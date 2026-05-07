@@ -1,0 +1,548 @@
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --accent-active: #4d8fab;
+  --accent-idle: #2d5f78;
+  --bg: #07090f;
+  --border: rgb(100 148 175 / 12%);
+  --breathe-duration: 18s;
+  --elevated: #13202e;
+  --font-body: -apple-system, blinkmacsystemfont, 'Segoe UI', sans-serif;
+  --font-mono: 'Courier New', courier, monospace;
+  --glow-duration: 26s;
+  --orb-fill: #0f1e2d;
+  --orb-glow: rgb(25 80 110 / 20%);
+  --orb-size: min(38vw, 38vh, 260px);
+  --surface: #0d1520;
+  --text-primary: #b0bfcc;
+  --text-secondary: #7a94a8;
+  --text-tertiary: #3a5060;
+  --transition-fast: 150ms ease;
+  --transition-slow: 600ms ease;
+}
+
+/* ============================================================
+   RESET
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================================================
+   BASE
+   ============================================================ */
+html {
+  block-size: 100%;
+  font-size: 16px;
+}
+
+body {
+  background-color: var(--bg);
+  block-size: 100%;
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+  min-block-size: 100dvb;
+}
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+.skip-link {
+  background-color: var(--elevated);
+  border-end-end-radius: 4px;
+  border-end-start-radius: 0;
+  border-start-end-radius: 0;
+  border-start-start-radius: 0;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  letter-spacing: 0.08em;
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  position: absolute;
+  text-decoration: none;
+  transform: translateY(-100%);
+  transition: transform var(--transition-fast);
+  z-index: 100;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvb;
+  padding-block: 1.25rem;
+  padding-inline: 1.5rem;
+}
+
+.main {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0;
+  justify-content: center;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.site-header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-block-end: 1rem;
+}
+
+.wordmark {
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.2em;
+  text-transform: lowercase;
+  user-select: none;
+}
+
+/* ============================================================
+   MUTE BUTTON
+   ============================================================ */
+.mute-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  padding-block: 0.375rem;
+  padding-inline: 0.75rem;
+  text-transform: lowercase;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.mute-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
+}
+
+.mute-btn:focus-visible {
+  outline: 2px solid var(--accent-active);
+  outline-offset: 3px;
+}
+
+.mute-btn[aria-pressed='true'] {
+  border-color: var(--accent-active);
+  color: var(--text-primary);
+}
+
+.mute-btn:hover:not(:disabled) {
+  border-color: var(--accent-idle);
+  color: var(--text-primary);
+}
+
+/* ============================================================
+   ORB
+   ============================================================ */
+.orb-section {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding-block: 2.5rem;
+}
+
+.orb-wrap {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.orb {
+  background-color: var(--orb-fill);
+  block-size: var(--orb-size);
+  border-radius: 50%;
+  inline-size: var(--orb-size);
+  opacity: 0.45;
+  position: relative;
+  transition: opacity 3000ms ease;
+  will-change: transform;
+  z-index: 1;
+}
+
+.orb-ring {
+  block-size: var(--orb-size);
+  border-radius: 50%;
+  box-shadow: 0 0 70px 28px var(--orb-glow);
+  inline-size: var(--orb-size);
+  opacity: 0.2;
+  position: absolute;
+  transition: opacity 3000ms ease;
+  will-change: opacity;
+  z-index: 0;
+}
+
+/* Active state — orb breathes and glows */
+.orb.is-active {
+  animation: breathe var(--breathe-duration) ease-in-out infinite;
+  opacity: 1;
+}
+
+.orb-ring.is-active {
+  animation: glow-pulse var(--glow-duration) ease-in-out infinite;
+  opacity: 1;
+}
+
+/* Muted state */
+.orb.is-muted {
+  opacity: 0.3;
+}
+
+.orb-ring.is-muted {
+  opacity: 0.15;
+}
+
+/* ============================================================
+   ORB ANIMATIONS
+   ============================================================ */
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.09);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.15;
+  }
+
+  50% {
+    opacity: 0.55;
+  }
+}
+
+/* ============================================================
+   PROMPT (gesture gate)
+   ============================================================ */
+.prompt {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-block-end: 2rem;
+  transition: opacity var(--transition-slow);
+}
+
+.prompt.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.prompt-btn {
+  background: none;
+  block-size: 72px;
+  border: 1px solid var(--accent-idle);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  inline-size: 72px;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  transition:
+    border-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.prompt-btn:hover {
+  border-color: var(--accent-active);
+  color: var(--text-primary);
+}
+
+.prompt-btn:focus-visible {
+  outline: 2px solid var(--accent-active);
+  outline-offset: 3px;
+}
+
+.prompt-hint {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  inline-size: min(380px, 100%);
+  margin-inline: auto;
+  transition: opacity var(--transition-slow);
+}
+
+.controls[aria-disabled='true'] {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.control-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+/* ============================================================
+   MOOD SELECTOR
+   ============================================================ */
+.mood-set {
+  border: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.mood-tabs {
+  display: flex;
+  gap: 0;
+}
+
+.mood-tab {
+  cursor: pointer;
+  flex: 1;
+}
+
+/* Visually hide the radio input */
+.mood-tab input[type='radio'] {
+  block-size: 1px;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.mood-tab span {
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  margin-inline-end: -1px;
+  padding-block: 0.5rem;
+  padding-inline: 0;
+  text-align: center;
+  text-transform: lowercase;
+  transition:
+    background-color var(--transition-fast),
+    color var(--transition-fast);
+}
+
+.mood-tab:first-child span {
+  border-end-start-radius: 2px;
+  border-start-start-radius: 2px;
+}
+
+.mood-tab:last-child span {
+  border-end-end-radius: 2px;
+  border-start-end-radius: 2px;
+  margin-inline-end: 0;
+}
+
+.mood-tab input[type='radio']:checked + span {
+  background-color: var(--elevated);
+  border-color: var(--accent-idle);
+  color: var(--text-primary);
+  position: relative;
+  z-index: 1;
+}
+
+.mood-tab input[type='radio']:focus-visible + span {
+  outline: 2px solid var(--accent-active);
+  outline-offset: 2px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ============================================================
+   SLIDER
+   ============================================================ */
+.ctrl-label {
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+}
+
+/* legend inside fieldset */
+.mood-set .ctrl-label {
+  display: block;
+  float: none;
+  inline-size: 100%;
+  margin-block-end: 0;
+}
+
+.slider {
+  appearance: none;
+  background: transparent;
+  block-size: 2.5rem;
+  cursor: pointer;
+  inline-size: 100%;
+  outline: none;
+}
+
+/* WebKit track */
+.slider::-webkit-slider-runnable-track {
+  background-color: var(--accent-idle);
+  block-size: 2px;
+  border-radius: 1px;
+}
+
+/* WebKit thumb */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  background-color: var(--accent-active);
+  block-size: 12px;
+  border: none;
+  border-radius: 50%;
+  inline-size: 12px;
+  margin-block-start: -5px;
+}
+
+/* Firefox track */
+.slider::-moz-range-track {
+  background-color: var(--accent-idle);
+  block-size: 2px;
+  border-radius: 1px;
+}
+
+/* Firefox thumb */
+.slider::-moz-range-thumb {
+  appearance: none;
+  background-color: var(--accent-active);
+  block-size: 12px;
+  border: none;
+  border-radius: 50%;
+  inline-size: 12px;
+}
+
+.slider:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--accent-active);
+  outline-offset: 3px;
+}
+
+.slider:focus-visible::-moz-range-thumb {
+  outline: 2px solid var(--accent-active);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   STOP BUTTON
+   ============================================================ */
+.stop-btn {
+  align-self: center;
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  padding-block: 0.25rem;
+  padding-inline: 0.5rem;
+  text-transform: lowercase;
+  transition: color var(--transition-fast);
+}
+
+.stop-btn:hover {
+  color: var(--text-secondary);
+}
+
+.stop-btn:focus-visible {
+  outline: 2px solid var(--accent-active);
+  outline-offset: 3px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  margin-block-start: 1.5rem;
+  text-align: center;
+}
+
+.footer-note {
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: lowercase;
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .orb,
+  .orb-ring {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .orb.is-active {
+    opacity: 1;
+    transform: scale(1.045);
+  }
+
+  .orb-ring.is-active {
+    opacity: 0.35;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (width >= 600px) {
+  .layout {
+    padding-block: 2rem;
+    padding-inline: 2.5rem;
+  }
+}
+
+@media (width >= 1024px) {
+  .layout {
+    padding-inline: 3rem;
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "name": "interval",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint:css": "stylelint \"css/**/*.css\"",
+    "lint:js": "eslint \"js/**/*.js\"",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.html": [
+      "prettier --write"
+    ],
+    "*.css": [
+      "prettier --write",
+      "stylelint --fix"
+    ],
+    "*.js": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "globals": "^17.6.0",
+    "husky": "^9.0.0",
+    "lint-staged": "^15.0.0",
+    "prettier": "^3.0.0",
+    "stylelint": "^16.0.0",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-order": "^6.0.0"
+  }
+}

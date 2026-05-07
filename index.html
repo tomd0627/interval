@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Interval — an ambient sound environment synthesized entirely in the browser using the Web Audio API. No audio files."
+    />
+    <meta name="color-scheme" content="dark" />
+    <title>Interval</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#controls">Skip to controls</a>
+
+    <div class="layout">
+      <header class="site-header">
+        <span class="wordmark" aria-label="Interval">interval</span>
+        <button
+          class="mute-btn"
+          id="muteBtn"
+          type="button"
+          aria-label="Mute audio"
+          aria-pressed="false"
+          disabled
+        >
+          mute
+        </button>
+      </header>
+
+      <main class="main">
+        <section class="orb-section" aria-hidden="true">
+          <div class="orb-wrap">
+            <div class="orb-ring" id="orbRing"></div>
+            <div class="orb" id="orb"></div>
+          </div>
+        </section>
+
+        <div class="prompt" id="prompt" role="status" aria-live="polite">
+          <button class="prompt-btn" id="startBtn" type="button" aria-label="Start ambient sound">
+            begin
+          </button>
+          <p class="prompt-hint" aria-hidden="true">tap to initialize audio</p>
+        </div>
+
+        <section class="controls" id="controls" aria-label="Sound parameters" aria-disabled="true">
+          <div class="control-row">
+            <fieldset class="mood-set">
+              <legend class="ctrl-label">mood</legend>
+              <div class="mood-tabs" role="group" aria-label="Mood">
+                <label class="mood-tab">
+                  <input type="radio" name="mood" value="still" checked />
+                  <span>still</span>
+                </label>
+                <label class="mood-tab">
+                  <input type="radio" name="mood" value="open" />
+                  <span>open</span>
+                </label>
+                <label class="mood-tab">
+                  <input type="radio" name="mood" value="uneasy" />
+                  <span>uneasy</span>
+                </label>
+              </div>
+            </fieldset>
+          </div>
+
+          <div class="control-row">
+            <label class="ctrl-label" for="density">density</label>
+            <input
+              class="slider"
+              id="density"
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="50"
+            />
+          </div>
+
+          <div class="control-row">
+            <label class="ctrl-label" for="rate">rate</label>
+            <input
+              class="slider"
+              id="rate"
+              type="range"
+              min="0"
+              max="100"
+              value="50"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="50"
+            />
+          </div>
+
+          <button class="stop-btn" id="stopBtn" type="button" hidden>stop</button>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <p class="footer-note">
+          synthesized in the browser &middot; no audio files &middot; web audio api
+        </p>
+      </footer>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+  </body>
+</html>
